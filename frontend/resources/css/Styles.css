@@ -1,5 +1,5 @@
 .buttons {
-    background-color: rgb(41, 36, 75);
+    background-color: #8b53ff;
     color: antiquewhite;
     border: none;
     padding: 10px 20px;
@@ -26,10 +26,10 @@
   }
 
 .image-container {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    flex-direction: column;
+	height: 15 rem;
+	width:  em;
+	margin-bottom: 2em;
 }
 
 .text-containerRight {

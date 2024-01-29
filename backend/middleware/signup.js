@@ -2,6 +2,7 @@ import User from "../db/user.js";
 import bcrypt from "bcrypt";
 
 const signup = async (req, res, next) => {
+    console.log(req.body);
     try {
         const user = new User(req.body);
         user.password = await bcrypt.hash(user.password, 8);

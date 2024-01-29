@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-const url = "mongodb://localhost:27017/chatbot";
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+dotenv.config();
+
+const url = process.env.MONGO_URL;
+mongoose.connect(url);
 
 const db = mongoose.connection;
 

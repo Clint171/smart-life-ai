@@ -1,5 +1,5 @@
 import express from "express";
-//import db from "./db/db.js"
+import db from "./db/db.js"
 import accountRouter from "./routers/accountRouter.js";
 import chatRouter from "./routers/chatRouter.js";
 import cors from "cors"

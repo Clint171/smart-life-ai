@@ -11,17 +11,17 @@ signupSubmit.addEventListener("click" , ()=>{
         return;
     } 
     let fetchOptions = {
-        method : "post",
-        headers: {
+        "method" : "post",
+        "headers": {
             "Content-type" : "application/json"
         },
-        body : {
+        "body" : JSON.stringify({
             "username" : username,
             "password" : pass,
             "email" : email
-        }
+        })
     }
-    fetch("https://smart-life-ai-endpoint.onrender.com", fetchOptions, false).then((response)=>{
-        alert("Form submitted.");
+    fetch("http://localhost:3000/register", fetchOptions, false).then((response)=>{
+        alert("Account created! Please log in.");
     });
 });

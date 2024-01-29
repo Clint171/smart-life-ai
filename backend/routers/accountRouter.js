@@ -1,6 +1,6 @@
 import express from "express";
-import signup from "../middleware/signup.js"
-import login from "../middleware/login.js"
+import signup from "../middleware/signup.js";
+import login from "../middleware/login.js";
 
 const router = express.Router();
 

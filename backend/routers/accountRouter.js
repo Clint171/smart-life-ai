@@ -1,25 +1,26 @@
 import express from "express";
+import signup from "../middleware/signup.js"
+import login from "../middleware/login.js"
 
 const router = express.Router();
 
+router.use(express.static("public"));
+
 router.get("/", (req, res) => {
-  res.send("Landing page, or chat page if logged in");
+  res.redirect("https://smart-life-ai.onrender.com/");
 });
 
 router.get("/login", (req, res) => {
-    res.send("Login page");
+    res.redirect("https://smart-life-ai.onrender.com/Signup.html");
 });
 
 router.get("/register", (req, res) => {
-    res.send("Register page");
+    res.redirect("https://smart-life-ai.onrender.com/Signup.html");
 });
 
-router.post("/login", (req, res) => {
-    res.send("chat page if login successful, login page if not");
+router.post("/login", login ,(req, res) => {
+    res.send("https://smart-life-ai.onrender.com/chat.html");
 });
 
-router.post("/register", (req, res) => {
-    res.send("chat page if register successful, register page if not");
-});
-
+router.post("/register", signup)
 export default router;

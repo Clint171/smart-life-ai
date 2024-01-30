@@ -11,7 +11,6 @@
     cursor: pointer;
     border-radius: 5px;
 }
-
 .container {
     display: flex;
     justify-content: space-between;
@@ -27,9 +26,6 @@
 
 .image-container {
     align-items: center;
-	height: 15 rem;
-	width:  em;
-	margin-bottom: 2em;
 }
 
 .text-containerRight {
@@ -38,9 +34,49 @@
     color: rgb(0, 0, 0);
     border: 2px solid rgb(41, 36, 75);
     padding: 20px;
-    margin: 20px auto; 
     text-align: left;
+	margin: auto;
 }
+
+.AI-cont{
+	background-color: rgba(85, 85, 85, 0.5);
+	width:fit-content;
+	padding: 1em;
+	border-radius: 100px 100px 100px;
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight:100;
+	max-width: 80%;
+}
+.User-cont{
+	background-color: rgba(85, 85, 85, 0.5);
+	font-family: Arial, Helvetica, sans-serif;
+	border-radius: 100px 100px 100px;
+	padding: 14px;
+	max-width:80%;
+	width:fit-content;
+	color: white;
+	position: absolute;
+	right: 0;
+	font-weight: 100;
+}
+
+.Textarea{
+	position: absolute;
+	bottom: 0;
+	width: 96%;
+	margin: 0 10px 3em 10px;
+	border-radius: 100px;
+	background-color: rgba(85, 85, 85, 0.5);
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: 100;
+	text-align: center;
+	align-items: center;
+	padding : 0 1em;
+	resize: none;
+	outline: none;
+}
+
 
 .text-containerLeft {
     background-color: aliceblue;

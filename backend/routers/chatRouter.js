@@ -1,19 +1,16 @@
 import express from "express";
 import auth from "../middleware/auth.js";
-import cookieParser from "cookie-parser";
 
 const router = express.Router();
 
 //This router should use middleware to attach the user to the request object from the session
-router.use(cookieParser());
-router.use(auth);
 
 router.get("/chat", (req, res) => {
-    res.send("Chat page, or landing page if not logged in");
+    res.redirect("https://smart-life-ai.onrender.com/chat.html");
 });
 
-router.post("/chat", (req, res) => {
-
+router.post("/chat", auth , (req, res) => {
+    
 });
 
 export default router;

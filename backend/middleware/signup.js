@@ -1,13 +1,19 @@
 import User from "../db/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const signup = async (req, res, next) => {
-    console.log(req.body);
     try {
+        const dbUser = await User.findOne({ $or: [{ username: req.body.username }, { email: req.body.email }] }).exec();
+        if (dbUser) {
+            res.status(400).send("User already exists");
+            return;
+        }
         const user = new User(req.body);
         user.password = await bcrypt.hash(user.password, 8);
         await user.save();
-        res.redirect("https://smart-life-ai.onrender.com/Signup.html");
+        const token = jwt.sign(JSON.stringify(user), process.env.JWT_SECRET);
+        res.status(201).json({"token" : token});
     } catch (error) {
         console.log(error);
         res.status(400).send(error);

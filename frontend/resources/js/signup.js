@@ -21,7 +21,16 @@ signupSubmit.addEventListener("click" , ()=>{
             "email" : email
         })
     }
-    fetch("http://localhost:3000/register", fetchOptions, false).then((response)=>{
-        alert("Account created! Please log in.");
+    fetch("http://localhost:3000/register", fetchOptions, false).then(async (response)=>{
+        if(response.status != 201){
+            const message = await response.text();
+            alert(message);
+        }
+        else{
+            alert("Account created successfully!");
+            const token = await response.json();
+            localStorage.setItem("token" , JSON.stringify(token));
+            window.location.href = "chat.html";
+        }
     });
 });

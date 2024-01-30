@@ -12,7 +12,8 @@ const login = async (req, res, next) => {
     //Else, send error
     console.log(req.body);
     try {
-        const user = await User.findOne({ username: req.body.username });
+        //find user by username or email
+        const user = await User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }]}).exec();
         if (!user) {
             res.status(404).send("User not found");
             return;
@@ -23,7 +24,7 @@ const login = async (req, res, next) => {
             return;
         }
         const token = jwt.sign(JSON.stringify(user), process.env.JWT_SECRET);
-        res.cookie("token", token, { httpOnly: true });
+        res.status(200).json({"token" : token});
         next();
     } catch (error) {
         res.status(400).send(error);

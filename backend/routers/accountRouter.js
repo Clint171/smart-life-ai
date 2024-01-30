@@ -18,9 +18,8 @@ router.get("/register", (req, res) => {
     res.redirect("https://smart-life-ai.onrender.com/Signup.html");
 });
 
-router.post("/login", login ,(req, res) => {
-    res.send("https://smart-life-ai.onrender.com/chat.html");
-});
+router.post("/login", login);
 
-router.post("/register", signup)
+router.post("/register", signup);
+
 export default router;

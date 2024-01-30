@@ -21,7 +21,7 @@ signupSubmit.addEventListener("click" , ()=>{
             "email" : email
         })
     }
-    fetch("http://localhost:3000/register", fetchOptions, false).then(async (response)=>{
+    fetch("https://smart-life-ai-endpoint.onrender.com/register", fetchOptions, false).then(async (response)=>{
         if(response.status != 201){
             const message = await response.text();
             alert(message);

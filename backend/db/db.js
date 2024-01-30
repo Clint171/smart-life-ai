@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const url = process.env.MONGO_URL;
-mongoose.connect(url);
+mongoose.connect(url , {
+    dbName: "chatbot"
+});
 
 const db = mongoose.connection;
 

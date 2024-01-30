@@ -9,7 +9,7 @@ loginSubmit.addEventListener("click", ()=>{
         password: password,
     };
     
-    fetch("http://localhost:3000/login", {
+    fetch("https://smart-life-ai-endpoint.onrender.com/login", {
         method: "POST",
         headers: {
         "Content-Type": "application/json",

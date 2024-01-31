@@ -26,17 +26,15 @@
     <header>
         <div class="image-container"> <img src="resources/img/lg.PNG" alt="Smart Life Logo" width="50" height="50"></div>
     </header>
-<body>  
-      <div class="text-containerRight">
-        <p style="text-align: center;">🌟 Welcome onboard! 🖥💻<br>
-            Start chatting now to experience a revolution in computing accessibility! 🚀<br><br></p>
-      </div>
+<body>
     <div>
-      <div >
+      <div id="chatDiv" >
         <p class="AI-cont">Hello there, how can I help you?</p>
-        <p class="User-cont">Could you help me draft an application letter for a secretary role at smartlife company?</p>
       </div>
-      <textarea class="Textarea" r></textarea>
+      <div class="textarea-container">
+        <textarea id="message" class="Textarea" autofocus></textarea>
+        <button class="send-button" onclick="processMessage()">Send</button>
+      </div>
     </div>
     <script src="resources/js/chat.js"></script>
 </body>

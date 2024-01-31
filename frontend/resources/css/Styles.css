@@ -56,6 +56,22 @@
 .User-cont{
 	align-self: flex-end;
 }
+pre{
+	white-space: pre-wrap;
+	background-color: rgba(43, 43, 43, 0.7);
+	padding: 0.5em;
+	border-radius: 20px;
+}
+code{
+	background-color: rgba(43, 43, 43, 0.7);
+	padding: 0.3em;
+	border-radius: 5px;
+}
+pre code{
+	background-color: transparent;
+	padding: 0;
+	border-radius: 0%;
+}
 .textarea-container{
 	display: flex;
 	width: 96%;

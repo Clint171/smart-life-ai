@@ -1,5 +1,3 @@
-const { set } = require("mongoose");
-
 function checkSignIn() {
     let token = localStorage.getItem("token");
     if (token == null || token == undefined || !token) {
@@ -33,18 +31,20 @@ function sendMessage(message){
 
 function createUserMessageP(message){
     let chatDiv = document.getElementById("chatDiv");
-    let p = document.createElement("p");
-    p.classList.add("User-cont");
-    p.innerText = message;
-    chatDiv.appendChild(p);
+    let div = document.createElement("div");
+    div.classList.add("User-cont");
+    message = marked.parse(message);
+    div.innerHTML = message;
+    chatDiv.appendChild(div);
 }
 
 function createAIMessageP(message){
     let chatDiv = document.getElementById("chatDiv");
-    let p = document.createElement("p");
-    p.classList.add("AI-cont");
-    p.innerText = message;
-    chatDiv.appendChild(p);
+    let div = document.createElement("div");
+    div.classList.add("AI-cont");
+    message = marked.parse(message);
+    div.innerHTML = message;
+    chatDiv.appendChild(div);
 }
 
 function processMessage(){

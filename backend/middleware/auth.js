@@ -8,11 +8,11 @@ const auth = async (req, res, next) => {
             req.user = decoded;
             next();
         } catch (error) {
-            res.status(401).redirect("/register");
+            res.status(401).send("Unauthorized");
         }
     }
     else {
-        res.status(401).redirect("/register");
+        res.status(401).send("Unauthorized");
     }
 }
 

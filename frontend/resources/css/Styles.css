@@ -37,46 +37,56 @@
     text-align: left;
 	margin: auto;
 }
-
-.AI-cont{
-	background-color: rgba(85, 85, 85, 0.5);
+#chatDiv{
+	display: flex;
+	flex-direction: column;
+	max-width: 60em;
+	margin: auto;
+}
+.AI-cont, .User-cont{
+	display: block;
 	width:fit-content;
-	padding: 1em;
-	border-radius: 100px 100px 100px;
-	color: white;
+	background-color: rgba(0, 0, 0, 0.5);
 	font-family: Arial, Helvetica, sans-serif;
-	font-weight:100;
-	max-width: 80%;
+	border-radius: 20px;
+	padding: 1em;
+	max-width:80%;
+	color: white;
 }
 .User-cont{
-	background-color: rgba(85, 85, 85, 0.5);
-	font-family: Arial, Helvetica, sans-serif;
-	border-radius: 100px 100px 100px;
-	padding: 14px;
-	max-width:80%;
-	width:fit-content;
-	color: white;
-	position: absolute;
-	right: 0;
-	font-weight: 100;
+	align-self: flex-end;
 }
-
-.Textarea{
-	position: absolute;
-	bottom: 0;
+.textarea-container{
+	display: flex;
 	width: 96%;
-	margin: 0 10px 3em 10px;
-	border-radius: 100px;
-	background-color: rgba(85, 85, 85, 0.5);
-	font-family: Arial, Helvetica, sans-serif;
-	font-weight: 100;
-	text-align: center;
+	flex-direction: row;
+	justify-content: center;
 	align-items: center;
-	padding : 0 1em;
-	resize: none;
+	position: fixed;
+	bottom: 1em;
+	margin: 0.5em;
+}
+.Textarea{
+	width: 85%;
+	border-radius: 20px;
+	background-color: rgba(0, 0, 0, 0.7);
+	color: white;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: 200;
+	padding : 0.4em 1em;
+	resize: vertical;
 	outline: none;
 }
-
+.send-button{
+	width: 15%;
+	border-radius: 100px;
+	background-color: rgba(0, 0, 0, 0.7);
+	color: white;
+	height: 4em;
+}
+.send-button:hover{
+	background-color: rgba(71, 71, 71, 0.9);
+}
 
 .text-containerLeft {
     background-color: aliceblue;
@@ -90,7 +100,7 @@
 }
 
 body{
-	margin:0;
+	margin-bottom: 4em;
 	color:#6a6f8c;
 	background:#c8c8c8;
 	font:600 16px/18px 'Open Sans',sans-serif;

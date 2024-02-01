@@ -26,17 +26,17 @@
     <header>
         <div class="image-container"> <img src="resources/img/lg.PNG" alt="Smart Life Logo" width="50" height="50"></div>
     </header>
-<body>  
-      <div class="text-containerRight">
-        <p style="text-align: center;">🌟 Welcome onboard! 🖥💻<br>
-            Start chatting now to experience a revolution in computing accessibility! 🚀<br><br></p>
-      </div>
+<body>
     <div>
-      <div >
-        <p class="AI-cont">Hello there how can we help you?</p>
-        <p class="User-cont"> I WOULD LIKE TO HAVE COFFEE</p>
+      <div id="chatDiv" >
+        <div class="AI-cont">Hello there, how can I help you?</div>
       </div>
-      <textarea class="Textarea" r></textarea>
+      <div class="textarea-container">
+        <textarea id="message" class="Textarea" autofocus></textarea>
+        <button class="send-button" onclick="processMessage()">Send</button>
+      </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="resources/js/chat.js"></script>
 </body>
 </html>

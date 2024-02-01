@@ -1,5 +1,14 @@
 let signupSubmit = document.querySelector("#submit");
 
+function checkSignIn() {
+    let token = localStorage.getItem("token");
+    if (token) {
+        window.location.href = "chat.html";
+    }
+}
+
+checkSignIn();
+
 signupSubmit.addEventListener("click" , ()=>{
     let username = document.querySelector("#user").value;
     let pass = document.querySelector("#pass").value;

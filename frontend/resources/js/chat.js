@@ -12,9 +12,12 @@ function logout(){
     window.location.href = "Signup.html";
 }
 
-function sendMessage(message){
+function sendMessage(){
+    let message = document.getElementById("message").value;
+    createUserMessageP(message);
+    document.getElementById("message").value = "";
     let token = localStorage.getItem("token");
-    let url = "https://localhost:300/chat";
+    let url = "https://smart-life-ai-endpoint.onrender.com/chat";
     let fetchOptions = {
         method: 'POST',
         headers: {
@@ -25,7 +28,16 @@ function sendMessage(message){
     };
     fetch(url, fetchOptions)
     .then(async (res)=>{
-        return await res.json();
+        if (res.status == 401){
+            createAIMessageP("You are not logged in.");
+        }
+        else if (res.status == 500){
+            createAIMessageP("An error occurred.");
+        }
+        else if (res.status == 200){
+            let data = await res.json();
+            createAIMessageP(data.content);
+        }
     })
 }
 
@@ -45,14 +57,4 @@ function createAIMessageP(message){
     message = marked.parse(message);
     div.innerHTML = message;
     chatDiv.appendChild(div);
-}
-
-function processMessage(){
-    let message = document.getElementById("message").value;
-    createUserMessageP(message);
-    //sendMessage(message);
-    document.getElementById("message").value = "";
-    setTimeout(()=>{
-    createAIMessageP("As an AI, I can't understand you.");
-    }, 1000);
 }

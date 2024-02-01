@@ -12,7 +12,7 @@ const llamaAPI = new LlamaAI(apiToken);
 const sendQuery = async (req, res, next) => {
     const apiRequest = {
         "messages": [
-            {"role" : "system", "content" : "You are a helpful assistant."}
+            {"role" : "system", "content" : "You are a helpful assistant called Smart-Talk."}
         ],
         "stream" : false,
         "temperature" : "0.5"

@@ -17,7 +17,7 @@ function sendMessage(){
     createUserMessageP(message);
     document.getElementById("message").value = "";
     let token = localStorage.getItem("token");
-    let url = "http://localhost:3000/chat";
+    let url = "https://smart-life-ai-endpoint.onrender.com/chat";
     let fetchOptions = {
         method: 'POST',
         headers: {

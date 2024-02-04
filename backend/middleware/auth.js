@@ -1,18 +1,26 @@
 import jwt from 'jsonwebtoken';
 
 const auth = async (req, res, next) => {
-    if (req.headers.authorization) {
+    if (req.headers["authorization"]) {
         try {
-            const token = req.headers.authorization.split(" ")[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = decoded;
-            next();
+            const authHeader = req.headers["authorization"];
+            let token = authHeader && authHeader.split(' ')[1];
+            token = token.replace(/['"]+/g, '');
+            jwt.verify(token, process.env.JWT_SECRET, (err , user)=>{
+                if(err){
+                    console.log(err);
+                    return res.sendStatus(403);
+                }
+                req.user = user;
+                next();
+            });
         } catch (error) {
-            res.status(401).send("Unauthorized");
+            console.log(error);
+            return res.sendStatus(401);
         }
     }
     else {
-        res.status(401).send("Unauthorized");
+        return res.sendStatus(401);
     }
 }
 

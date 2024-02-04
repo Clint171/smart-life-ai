@@ -18,7 +18,7 @@ loginSubmit.addEventListener("click", ()=>{
         password: password,
     };
     
-    fetch("https://smart-life-ai-endpoint.onrender.com/login", {
+    fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
         "Content-Type": "application/json",
@@ -26,8 +26,8 @@ loginSubmit.addEventListener("click", ()=>{
         body: JSON.stringify(data)
     }).then(async (res) => {
         if (res.status === 200) {
-            const token = await res.json();
-            localStorage.setItem("token" , JSON.stringify(token));
+            const data = await res.json();
+            localStorage.setItem("token" , JSON.stringify(data.token));
             window.location.href = "chat.html";
         } else {
         alert("Invalid Credentials");

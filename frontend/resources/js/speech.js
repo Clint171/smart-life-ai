@@ -12,6 +12,7 @@ speakTextButton.addEventListener('click', speakText);
 
 function startRecognition() {
   if ('SpeechRecognition' in window) {
+    navigator.mediaDevices.getUserMedia({ audio: true });
     recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
@@ -24,7 +25,23 @@ function startRecognition() {
 
     recognition.start();
     recognitionResultElement.textContent = 'Listening...';
-  } else {
+  }
+  else if ("webkitSpeechRecognition" in window) {
+    navigator.mediaDevices.getUserMedia({ audio: true });
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US'; // Adjust language as needed
+
+    recognition.onstart = recognitionStarted;
+    recognition.onresult = recognitionResult;
+    recognition.onend = recognitionEnded;
+    recognition.onerror = recognitionError;
+
+    recognition.start();
+    recognitionResultElement.textContent = 'Listening...';
+  }
+    else {
     recognitionResultElement.textContent = 'Speech recognition not supported in this browser.';
   }
 }

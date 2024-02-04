@@ -12,9 +12,7 @@ const sendQuery = async (req, res, next) => {
     const apiRequest = {
         "model": "llama-70b-chat",
         "messages": [
-            {"role" : "system", "content" : "You are a helpful assistant."},
-            {"role" : "user" , "content" : "Hi, my name is CLint"},
-            {"role" : "assistant" , "content" : "Greetings, Clint! I'm here to assist you in any way I can. Is there something specific you need help with or would you like to chat about something in particular?"}
+            {"role" : "system", "content" : "You are a helpful assistant."}
         ],
         "stream" : false,
         "temperature" : "0.5",
@@ -22,27 +20,28 @@ const sendQuery = async (req, res, next) => {
         
 
     }
-    let userId = req.user.id;
-    let user = await User.findOne({ _id : userId });
-    let chat = await Chat.findOne({ owner : user._id });
-    if (!chat){
-        chat = await Chat.create({
-            owner: user._id,
-            messages: []
-        });
-    }
-    let userMessage = {
-        role : "user",
-        content : req.body.message
-    }
-    chat.messages.push(userMessage);
-    if (!user.chats.includes(chat._id)){
-        //user.chats.push(chat._id);
-        //user.save();
-    }
-    for(let i in chat.messages){
-        apiRequest.messages.push(chat.messages[i]);
-    }
+    // let userId = req.user.id;
+    // let user = await User.findOne({ _id : userId });
+    // let chat = await Chat.findOne({ owner : user._id });
+    // if (!chat){
+    //     chat = await Chat.create({
+    //         owner: user._id,
+    //         messages: []
+    //     });
+    // }
+    // let userMessage = {
+    //     role : "user",
+    //     content : req.body.message
+    // }
+    // chat.messages.push(userMessage);
+    // if (!user.chats.includes(chat._id)){
+    //     //user.chats.push(chat._id);
+    //     //user.save();
+    // }
+    // for(let i in chat.messages){
+    //     apiRequest.messages.push(chat.messages[i]);
+    // }
+    apiRequest.messages.push({"role" : "user" , "content" : req.body.message});
     console.log(apiRequest.messages);
     // Execute the Request
     llamaAPI.run(apiRequest)

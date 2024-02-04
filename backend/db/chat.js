@@ -5,9 +5,9 @@ const chatSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    date: { type: Date, required: true },
-    //messages should be an array of objects with the following properties:
-    //role (user or AI)
-    //message (a message string)
     messages: { type: Array, required: true }
 });
+
+const Chat = mongoose.model("Chat", chatSchema);
+
+export default Chat;

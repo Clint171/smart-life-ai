@@ -15,21 +15,34 @@ function logout(){
 function sendMessage(){
     let message = document.getElementById("message").value;
     createUserMessageP(message);
+    let loadingDiv = document.createElement("div");
+    loadingDiv.classList.add("AI-cont");
+    let loading = document.createElement("iconify-icon");
+    loading.setAttribute("icon" , "svg-spinners:3-dots-move");
+    loading.setAttribute("width" , "70");
+    loading.setAttribute("height" , "auto");
+    loading.style.color = "white";
+    loadingDiv.appendChild(loading);
+    document.getElementById("chatDiv").appendChild(loadingDiv);
     document.getElementById("message").value = "";
     let token = localStorage.getItem("token");
-    let url = "https://smart-life-ai-endpoint.onrender.com/chat";
+    let url = "http://localhost:3000/chat";
     let fetchOptions = {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': "Bearer " + token
         },
         body: JSON.stringify({"message" : message})
     };
     fetch(url, fetchOptions)
     .then(async (res)=>{
+        document.getElementById("chatDiv").removeChild(loadingDiv);
         if (res.status == 401){
             createAIMessageP("You are not logged in.");
+        }
+        else if(res.status == 403){
+            createAIMessageP("You are not authorized.");
         }
         else if (res.status == 500){
             createAIMessageP("An error occurred.");

@@ -15,19 +15,16 @@ const login = async (req, res, next) => {
         //find user by username or email
         const user = await User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }]}).exec();
         if (!user) {
-            res.status(404).send("User not found");
-            return;
+            return res.sendStatus(404);
         }
         const isMatch = await bcrypt.compare(req.body.password, user.password);
         if (!isMatch) {
-            res.status(400).send("Incorrect password");
-            return;
+            return res.sendStatus(401);
         }
-        const token = jwt.sign(JSON.stringify(user), process.env.JWT_SECRET);
+        const token = jwt.sign({id : user._id.toString()}, process.env.JWT_SECRET);
         res.status(200).json({"token" : token});
-        next();
     } catch (error) {
-        res.status(400).send(error);
+        return res.sendStatus(401);
     }
 }
 

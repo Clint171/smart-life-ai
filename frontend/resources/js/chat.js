@@ -1,4 +1,5 @@
 const synth = window.speechSynthesis;
+let speechTimer;
 
 synth.getVoices();
 
@@ -18,6 +19,7 @@ function logout(){
 
 function sendMessage(){
     let message = document.getElementById("message").value;
+    if (message == "" || message == " " || message == null || message == undefined) return;
     createUserMessageP(message);
     let loadingDiv = document.createElement("div");
     loadingDiv.classList.add("AI-cont");
@@ -84,6 +86,8 @@ function speak(message){
     utterance.rate = 1;
     utterance.pitch = 1;
     speechSynthesis.speak(utterance);
+    utterance.onend = toggleSpeech();
+    utterance.onerror = stopRecognition();
 }
 
 function toggleSpeech(){
@@ -140,10 +144,14 @@ function stopRecognition() {
 }
 
 function recognitionStarted() {
-    recognitionResultElement.textContent = 'Speak now...';
+    document.getElementById('message').value = 'Speak now. Once you are done, click the microphone icon again.';
 }
 
 function recognitionResult(event) {
+    clearTimeout(speechTimer);
+    speechTimer = setTimeout(() => {
+        recognition.stop();
+    }, 3000);
     const transcript = Array.from(event.results)
         .map(result => result[0])
         .map(result => result.transcript)
@@ -153,6 +161,7 @@ function recognitionResult(event) {
 
 function recognitionEnded() {
     sendMessage();
+    document.getElementById('toggleSpeech').style.color = "white";
 }
 
 function recognitionError(event) {

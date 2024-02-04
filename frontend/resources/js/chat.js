@@ -86,8 +86,6 @@ function speak(message){
     utterance.rate = 1;
     utterance.pitch = 1;
     speechSynthesis.speak(utterance);
-    utterance.onend = toggleSpeech();
-    utterance.onerror = stopRecognition();
 }
 
 function toggleSpeech(){
@@ -108,7 +106,7 @@ function startRecognition(){
         navigator.mediaDevices.getUserMedia({ audio: true });
         recognition = new SpeechRecognition();
         recognition.continuous = true;
-        recognition.interimResults = true;
+        recognition.interimResults = false;
         recognition.lang = 'en-US'; // Adjust language as needed
 
         recognition.addEventListener('start', recognitionStarted);

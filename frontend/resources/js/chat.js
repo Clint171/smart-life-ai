@@ -31,6 +31,14 @@ function sendMessage(){
     loadingDiv.appendChild(loading);
     document.getElementById("chatDiv").appendChild(loadingDiv);
     document.getElementById("message").value = "";
+    if(message == "no" || message == "No" || message == "NO" || message == "that's it" || message == "That's it" || message == "THAT'S IT" || message == "stop" || message == "Stop" || message == "STOP" || message == "exit" || message == "Exit" || message == "EXIT" || message == "That's all" || message == "that's all" || message == "THAT'S ALL"){
+        stopRecognition();
+        return;
+    }
+    if(message == "sign out" || message == "Sign out" || message == "Sign Out" || message == "SIGN OUT" || message == "log out" || message == "Log out" || message == "Log Out" || message == "LOG OUT" || message == "sign off" || message == "Sign off" || message == "Sign Off" || message == "SIGN OFF" || message == "log off" || message == "Log off" || message == "Log Off" || message == "LOG OFF" || message == "signout" || message == "Signout" || message == "SignOut" || message == "SIGNOUT" || message == "logout" || message == "Logout" || message == "LogOut" || message == "LOGOUT" || message == "signoff" || message == "Signoff" || message == "SignOff" || message == "SIGNOFF" || message == "logoff" || message == "Logoff" || message == "LogOff" || message == "LOGOFF"){
+        logout();
+        return;
+    }
     let token = localStorage.getItem("token");
     let url = "https://smart-life-ai-endpoint.onrender.com/chat";
     let fetchOptions = {

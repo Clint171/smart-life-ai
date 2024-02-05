@@ -12,7 +12,6 @@ const signup = async (req, res, next) => {
         user.password = await bcrypt.hash(user.password, 8);
         user.save();
         const token = jwt.sign({id : user._id.toString()}, process.env.JWT_SECRET);
-        console.log(token);
         res.status(201).json({"token" : token});
     } catch (error) {
         console.log(error);

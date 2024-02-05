@@ -40,7 +40,7 @@ function sendMessage(){
         return;
     }
     let token = localStorage.getItem("token");
-    let url = "http://localhost:3000/chat";
+    let url = "https://smart-life-ai-endpoint.onrender.com/chat";
     let fetchOptions = {
         method: 'POST',
         headers: {
@@ -151,7 +151,7 @@ function stopRecognition() {
 }
 
 function recognitionStarted() {
-    document.getElementById('message').value = 'Speak now. Once you are done, click the microphone icon again.';
+    createAIMessageP('Speak now. Once you are done, click the microphone icon again.');
 }
 
 function recognitionResult(event) {
@@ -172,5 +172,5 @@ function recognitionEnded() {
 }
 
 function recognitionError(event) {
-    alert('Speech recognition error detected: ' + event.error);
+    createAIMessageP('Speech recognition error detected: ' + event.error);
 }

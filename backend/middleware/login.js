@@ -10,7 +10,6 @@ const login = async (req, res, next) => {
     //Check if password matches
     //If both are true, attach user to request object
     //Else, send error
-    console.log(req.body);
     try {
         //find user by username or email
         const user = await User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }]}).exec();
@@ -22,7 +21,6 @@ const login = async (req, res, next) => {
             return res.sendStatus(401);
         }
         const token = jwt.sign({id : user._id.toString()}, process.env.JWT_SECRET);
-        console.log(token);
         res.status(200).json({"token" : token});
     } catch (error) {
         return res.sendStatus(401);

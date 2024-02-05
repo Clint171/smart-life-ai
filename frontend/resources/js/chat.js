@@ -53,10 +53,10 @@ function sendMessage(){
     .then(async (res)=>{
         document.getElementById("chatDiv").removeChild(loadingDiv);
         if (res.status == 401){
-            createAIMessageP("You are not logged in.");
+            createAIMessageP("You are not logged in. Try saying 'sign out' to log out and then log in again.");
         }
         else if(res.status == 403){
-            createAIMessageP("You are not authorized.");
+            createAIMessageP("You are not authorized. Try saying 'sign out' to log out and then log in again.");
         }
         else if (res.status == 500){
             createAIMessageP("An error occurred.");

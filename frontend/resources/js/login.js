@@ -27,7 +27,7 @@ loginSubmit.addEventListener("click", ()=>{
     }).then(async (res) => {
         if (res.status === 200) {
             const data = await res.json();
-            localStorage.setItem("token" , JSON.stringify(data.token));
+            localStorage.setItem("token" , data.token);
             window.location.href = "chat.html";
         } else {
         alert("Invalid Credentials");

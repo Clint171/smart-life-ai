@@ -38,7 +38,7 @@ signupSubmit.addEventListener("click" , ()=>{
         else{
             alert("Account created successfully!");
             const data = await response.json();
-            localStorage.setItem("token" , JSON.stringify(data.token));
+            localStorage.setItem("token" , data.token);
             window.location.href = "chat.html";
         }
     });

@@ -5,7 +5,6 @@ const auth = async (req, res, next) => {
         try {
             const authHeader = req.headers["authorization"];
             let token = authHeader && authHeader.split(' ')[1];
-            token = token.replace(/['"]+/g, '');
             jwt.verify(token, process.env.JWT_SECRET, (err , user)=>{
                 if(err){
                     console.log(err);

@@ -174,3 +174,17 @@ function recognitionEnded() {
 function recognitionError(event) {
     createAIMessageP('Speech recognition error detected: ' + event.error);
 }
+
+//Styling related functions
+
+function transformUp(){
+    let el = document.getElementById("message");
+    el.style.height = "20em";
+    el.style.transition = "all 0.5s ease-in-out";    
+}
+
+function transformDown(){
+    let el = document.getElementById("message");
+    el.style.height = "3em";
+    el.style.transition = "all 0.5s ease-in-out";
+}

@@ -15,7 +15,7 @@ const sendQuery = async (req, res, next) => {
             {"role" : "system", "content" : "You are a helpful assistant called Clint."}
         ],
         "stream" : false,
-        "temperature" : 0.5,
+        "temperature" : 1.0,
         "max_length" : 1000
     }
     let userId = req.user.id;

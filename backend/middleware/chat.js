@@ -39,18 +39,16 @@ const sendQuery = async (req, res, next) => {
     for(let i = 0; i < chat.messages.length; i++){
             apiRequest.messages.push(chat.messages[i]);
     }
-    //apiRequest.messages.push({"role" : "user" , "content" : req.body.message});
-    console.log(apiRequest.messages);
     // Execute the Request
     llamaAPI.run(apiRequest)
    .then(response => {
-        console.log(response.choices[0].message);
         chat.messages.push({"role" : "assistant" , "content" : response.choices[0].message.content});
         chat.save();
         res.status(200).send(response.choices[0].message);
         return;
    })
    .catch(error => {
+        console.log(error);
         sendQuery(req, res, next);
    });
 };

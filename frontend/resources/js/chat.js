@@ -40,7 +40,7 @@ function sendMessage(){
         return;
     }
     let token = localStorage.getItem("token");
-    let url = "https://smart-life-ai-endpoint.onrender.com/chat";
+    let url = "http://localhost:3000/chat";
     let fetchOptions = {
         method: 'POST',
         headers: {

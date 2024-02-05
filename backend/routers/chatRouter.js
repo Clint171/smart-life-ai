@@ -1,6 +1,6 @@
 import express from "express";
 import auth from "../middleware/auth.js";
-import sendQuery from "../middleware/chat.js";
+import chat from "../middleware/chat.js";
 
 const router = express.Router();
 
@@ -11,6 +11,8 @@ router.get("/chat", (req, res) => {
     res.redirect("https://smart-life-ai.onrender.com/chat.html");
 });
 
-router.post("/chat", sendQuery);
+router.get("/chat/messages", chat.getChats);
+
+router.post("/chat", chat.sendQuery);
 
 export default router;

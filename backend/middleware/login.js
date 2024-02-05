@@ -22,6 +22,7 @@ const login = async (req, res, next) => {
             return res.sendStatus(401);
         }
         const token = jwt.sign({id : user._id.toString()}, process.env.JWT_SECRET);
+        console.log(token);
         res.status(200).json({"token" : token});
     } catch (error) {
         return res.sendStatus(401);

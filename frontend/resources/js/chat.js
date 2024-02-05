@@ -124,13 +124,13 @@ function startRecognition(){
         recognition.addEventListener('error', recognitionError);
 
         recognition.start();
-        recognitionResultElement.textContent = 'Listening...';
     }
     else if ("webkitSpeechRecognition" in window) {
         navigator.mediaDevices.getUserMedia({ audio: true });
         recognition = new webkitSpeechRecognition();
         recognition.continuous = true;
-        recognition.interimResults = true;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
         recognition.lang = 'en-US'; // Adjust language as needed
 
         recognition.onstart = recognitionStarted;

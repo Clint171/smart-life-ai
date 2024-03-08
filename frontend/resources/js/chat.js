@@ -30,6 +30,8 @@ function sendMessage(){
     loading.style.color = "white";
     loadingDiv.appendChild(loading);
     document.getElementById("chatDiv").appendChild(loadingDiv);
+    //scroll document to bottom
+    document.getElementById("chatDiv").scrollTo(0,document.getElementById("chatDiv").scrollHeight);
     document.getElementById("message").value = "";
     if(message == "no" || message == "No" || message == "NO" || message == "that's it" || message == "That's it" || message == "THAT'S IT" || message == "stop" || message == "Stop" || message == "STOP" || message == "exit" || message == "Exit" || message == "EXIT" || message == "That's all" || message == "that's all" || message == "THAT'S ALL"){
         stopRecognition();
@@ -64,8 +66,9 @@ function sendMessage(){
         else if (res.status == 200){
             let data = await res.json();
             createAIMessageP(data.content);
+            //scroll document to bottom
+            document.getElementById("chatDiv").scrollTo(0,document.getElementById("chatDiv").scrollHeight);
             speak(data.content);
-
         }
     })
 }
@@ -151,7 +154,7 @@ function stopRecognition() {
 }
 
 function recognitionStarted() {
-    createAIMessageP('Speak now. Once you are done, click the microphone icon again.');
+    createAIMessageP("I'm listening...");
 }
 
 function recognitionResult(event) {

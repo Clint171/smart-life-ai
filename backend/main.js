@@ -1,14 +1,35 @@
 import express from "express";
-import db from "./db/db.js"
 import accountRouter from "./routers/accountRouter.js";
 import chatRouter from "./routers/chatRouter.js";
 import cors from "cors"
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
+dotenv.config();
 
 
 const app = express();
 
 const port = process.env.PORT || 3000;
+
+const url = process.env.MONGO_URL;
+
+mongoose.set("strictQuery", false);
+mongoose.connect(url , {
+    dbName: "chatbot"
+});
+
+const db = mongoose.connection;
+
+db.on("error", (error) => {
+    console.log(error);
+}
+);
+
+db.once("open", () => {
+    console.log("Connected to database");
+}
+);
 
 app.use(cors());
 app.use(express.json());

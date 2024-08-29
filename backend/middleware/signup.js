@@ -1,4 +1,4 @@
-import User from "../db/user.js";
+import User from "../db/schema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 

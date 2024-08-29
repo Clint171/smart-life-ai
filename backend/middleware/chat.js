@@ -1,7 +1,6 @@
 import LlamaAI from 'llamaai';
 import dotenv from 'dotenv';
-import User from "../db/user.js";
-import Chat from "../db/chat.js";
+import {User , Chat} from "../db/schema.js";
 
 dotenv.config();
 

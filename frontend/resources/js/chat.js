@@ -1,8 +1,3 @@
-const synth = window.speechSynthesis;
-let speechTimer;
-
-synth.getVoices();
-
 function checkSignIn() {
     let token = localStorage.getItem("token");
     if (token == null || token == undefined || !token) {

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true, minlength: 3},
@@ -8,13 +7,16 @@ const userSchema = new mongoose.Schema({
     chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
 });
 
-userSchema.pre("save", function (next) {
-    if (this.isModified("password")) {
-        this.password = bcrypt.hash(this.password, 8);
-    }
-    next();
-});
-
 const User = mongoose.model("User", userSchema);
 
-export default User;
+const chatSchema = new mongoose.Schema({
+    owner : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    },
+    messages: { type: Array, required: true }
+});
+
+const Chat = mongoose.model("Chat", chatSchema);
+
+module.exports = {Chat , User};

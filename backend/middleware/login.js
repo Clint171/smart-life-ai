@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import User from "../db/schema.js";
+import schema from "../db/schema.js";
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ const login = async (req, res, next) => {
     //Else, send error
     try {
         //find user by username or email
-        const user = await User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }]}).exec();
+        const user = await schema.User.findOne({ $or: [{ username: req.body.username }, { email: req.body.username }]}).exec();
         if (!user) {
             return res.sendStatus(404);
         }
@@ -21,7 +21,9 @@ const login = async (req, res, next) => {
             return res.sendStatus(401);
         }
         const token = jwt.sign({id : user._id.toString()}, process.env.JWT_SECRET);
-        res.status(200).json({"token" : token});
+        
+        res.cookie("token", token, {httpOnly: true});
+        res.sendStatus(200);
     } catch (error) {
         return res.sendStatus(401);
     }

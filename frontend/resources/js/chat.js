@@ -1,16 +1,19 @@
-function checkSignIn() {
-    let token = localStorage.getItem("token");
-    if (token == null || token == undefined || !token) {
-        window.location.href = "Signup.html";
-    }
+let serverUrl = "http://localhost:3000";
+
+function checkSignIn(){
+    fetch(serverUrl + "/checkSignIn").then((res)=>{
+        if (res.status == 200){
+            return true;
+        }
+        else{
+            return null;
+        }
+    }).catch((err)=>{
+        console.log(err);
+    });
 }
 
-checkSignIn();
-
-function logout(){
-    localStorage.removeItem("token");
-    window.location.href = "Signup.html";
-}
+// checkSignIn();
 
 function sendMessage(){
     let message = document.getElementById("message").value;
@@ -59,8 +62,6 @@ function sendMessage(){
         else if (res.status == 200){
             let data = await res.json();
             createAIMessageP(data.content);
-            speak(data.content);
-
         }
     })
 }
@@ -81,93 +82,6 @@ function createAIMessageP(message){
     message = marked.parse(message);
     div.innerHTML = message;
     chatDiv.appendChild(div);
-}
-
-function speak(message){
-    const utterance = new SpeechSynthesisUtterance(message);
-    utterance.lang = 'en-GB';
-    utterance.rate = 1;
-    utterance.pitch = 1;
-    speechSynthesis.speak(utterance);
-}
-
-function toggleSpeech(){
-    let speechButton = document.getElementById("toggleSpeech");
-    if (speechButton.style.color == "white"){
-        startRecognition();
-        speechButton.style.color = "blue";
-    }
-    else{
-        stopRecognition();
-        speechButton.style.color = "white";
-    }
-}
-
-function startRecognition(){
-    let recognitionResultElement = document.getElementById('message');
-    if ('SpeechRecognition' in window) {
-        navigator.mediaDevices.getUserMedia({ audio: true });
-        recognition = new SpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-        recognition.lang = 'en-US'; // Adjust language as needed
-
-        recognition.addEventListener('start', recognitionStarted);
-        recognition.addEventListener('result', recognitionResult);
-        recognition.addEventListener('end', recognitionEnded);
-        recognition.addEventListener('error', recognitionError);
-
-        recognition.start();
-    }
-    else if ("webkitSpeechRecognition" in window) {
-        navigator.mediaDevices.getUserMedia({ audio: true });
-        recognition = new webkitSpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-        recognition.lang = 'en-US'; // Adjust language as needed
-
-        recognition.onstart = recognitionStarted;
-        recognition.onresult = recognitionResult;
-        recognition.onend = recognitionEnded;
-        recognition.onerror = recognitionError;
-
-        recognition.start();
-    }
-    else {
-        alert('Speech recognition not supported in this browser.');
-    }
-}
-function stopRecognition() {
-    if (recognition) {
-        recognition.stop();
-    }
-}
-
-function recognitionStarted() {
-    createAIMessageP('Speak now. Once you are done, click the microphone icon again.');
-}
-
-function recognitionResult(event) {
-    clearTimeout(speechTimer);
-    speechTimer = setTimeout(() => {
-        recognition.stop();
-    }, 3000);
-    const transcript = Array.from(event.results)
-        .map(result => result[0])
-        .map(result => result.transcript)
-        .join('');
-    document.getElementById('message').value = transcript;
-}
-
-function recognitionEnded() {
-    sendMessage();
-    document.getElementById('toggleSpeech').style.color = "white";
-}
-
-function recognitionError(event) {
-    createAIMessageP('Speech recognition error detected: ' + event.error);
 }
 
 //Styling related functions

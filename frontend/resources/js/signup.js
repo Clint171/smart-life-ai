@@ -1,4 +1,6 @@
 let signupSubmit = document.querySelector("#submit");
+let serverUrl = "http://localhost:3000";
+
 
 function checkSignIn() {
     let token = localStorage.getItem("token");
@@ -30,15 +32,13 @@ signupSubmit.addEventListener("click" , ()=>{
             "email" : email
         })
     }
-    fetch("https://smart-life-ai-endpoint.onrender.com/register", fetchOptions, false).then(async (response)=>{
+    fetch(serverUrl +"/register", fetchOptions, false).then(async (response)=>{
         if(response.status != 201){
             const message = await response.text();
             alert(message);
         }
         else{
             alert("Account created successfully!");
-            const data = await response.json();
-            localStorage.setItem("token" , data.token);
             window.location.href = "chat.html";
         }
     });

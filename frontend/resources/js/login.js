@@ -1,4 +1,5 @@
 let loginSubmit = document.querySelector("#lsubmit");
+let serverUrl = "http://localhost:3000";
 
 function checkSignIn() {
     let token = localStorage.getItem("token");
@@ -18,7 +19,7 @@ loginSubmit.addEventListener("click", ()=>{
         password: password,
     };
     
-    fetch("https://smart-life-ai-endpoint.onrender.com/login", {
+    fetch(serverUrl + "/login", {
         method: "POST",
         headers: {
         "Content-Type": "application/json",
@@ -26,11 +27,10 @@ loginSubmit.addEventListener("click", ()=>{
         body: JSON.stringify(data)
     }).then(async (res) => {
         if (res.status === 200) {
-            const data = await res.json();
-            localStorage.setItem("token" , data.token);
             window.location.href = "chat.html";
-        } else {
-        alert("Invalid Credentials");
+        } 
+        else {
+            alert("Invalid Credentials");
         }
     });
 });

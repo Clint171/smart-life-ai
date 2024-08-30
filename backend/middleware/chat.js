@@ -1,6 +1,6 @@
 import LlamaAI from 'llamaai';
 import dotenv from 'dotenv';
-import {User , Chat} from "../db/schema.js";
+import schema from "../db/schema.js";
 
 dotenv.config();
 
@@ -18,10 +18,10 @@ const sendQuery = async (req, res, next) => {
         "max_length" : 1000
     }
     let userId = req.user.id;
-    let user = await User.findOne({ _id : userId });
-    let chat = await Chat.findOne({ owner : user._id });
+    let user = await schema.User.findOne({ _id : userId });
+    let chat = await schema.Chat.findOne({ owner : user._id });
     if (!chat){
-        chat = await Chat.create({
+        chat = await schema.Chat.create({
             owner: user._id,
             messages: []
         });
@@ -56,8 +56,8 @@ const sendQuery = async (req, res, next) => {
 
 const getChats = async (req, res, next) => {
     let userId = req.user.id;
-    let user = await User.findOne({ _id : userId });
-    let chats = await Chat.find({ owner : user._id });
+    let user = await schema.User.findOne({ _id : userId });
+    let chats = await schema.Chat.find({ owner : user._id });
     if (!chats){
         chats = [];
     }

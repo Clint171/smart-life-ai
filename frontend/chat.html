@@ -31,13 +31,45 @@
       <div id="chatDiv" >
         <div class="AI-cont">Hello, how can I help you today?</div>
       </div>
+      <div id="g_id_onload"
+                data-client_id="823075513109-4i8tg29uh6qm0t70uo74dbkbmc6oo17e.apps.googleusercontent.com"
+                data-context="use"
+                data-ux_mode="redirect"
+                data-login_uri="http://localhost"
+                data-callback="handleCredentialResponse"
+                data-nonce=""
+                data-auto_select="true"
+                data-itp_support="true">
+            </div>
+
+            <div class="g_id_signin"
+                data-type="standard"
+                data-shape="rectangular"
+                data-theme="outline"
+                data-text="signin_with"
+                data-size="large"
+                data-logo_alignment="left">
+            </div>
       <div class="textarea-container">
         <textarea id="message" class="Textarea" autofocus onclick="transformUp()" onmouseleave="transformDown()"></textarea>
         <button class="send-button" onclick="sendMessage()">Send</button>
       </div>
     </div>
+    <!--Scripts-->
+
+    <!--Google Sign-In-->
+    <script src="https://accounts.google.com/gsi/client" async></script>
+
+    <!-- Marked.js, for markdown formatting-->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!--Socket.io client-->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+
+    <!--Iconify icons-->
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+
+    <!--Chat script-->
     <script src="resources/js/chat.js"></script>
 </body>
 </html>

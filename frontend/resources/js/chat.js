@@ -1,19 +1,8 @@
 let serverUrl = "http://localhost:3000";
 
-function checkSignIn(){
-    fetch(serverUrl + "/checkSignIn").then((res)=>{
-        if (res.status == 200){
-            return true;
-        }
-        else{
-            return null;
-        }
-    }).catch((err)=>{
-        console.log(err);
-    });
+function handleCredentialResponse(response) {
+    console.log("Encoded JWT ID token: " + response.credential);
 }
-
-// checkSignIn();
 
 function sendMessage(){
     let message = document.getElementById("message").value;

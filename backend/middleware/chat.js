@@ -2,6 +2,7 @@ import LlamaAI from 'llamaai';
 import dotenv from 'dotenv';
 import schema from "../db/schema.js";
 
+
 dotenv.config();
 
 const apiToken = process.env.LLAMA_AI_API_TOKEN;
@@ -13,7 +14,7 @@ const sendQuery = async (req, res, next) => {
         "messages": [
             {"role" : "system", "content" : "You are a helpful assistant called Clint."}
         ],
-        "stream" : false,
+        "stream" : true,
         "temperature" : 1.0,
         "max_length" : 1000
     }
@@ -38,20 +39,32 @@ const sendQuery = async (req, res, next) => {
     for(let i = 0; i < chat.messages.length; i++){
             apiRequest.messages.push(chat.messages[i]);
     }
-    //apiRequest.messages.push({"role" : "user" , "content" : req.body.message});
-    console.log(apiRequest.messages);
-    // Execute the Request
-    llamaAPI.run(apiRequest)
-   .then(response => {
-        console.log(response.choices[0].message);
-        chat.messages.push({"role" : "assistant" , "content" : response.choices[0].message.content});
-        chat.save();
-        res.status(200).send(response.choices[0].message);
-        return;
-   })
-   .catch(error => {
-        sendQuery(req, res, next);
-   });
+    async function handleStream() {
+        const sequenceGenerator = await llamaAPI.runStream(apiRequest);
+        const io = socket(req.app);
+            
+        let fullResponse = "";
+        if (sequenceGenerator[Symbol.asyncIterator]) {  // Check if it's a generator
+          for await (const chunk of sequenceGenerator) {
+            // I need to create a websocket connection to send the response to the client
+            // I also need to save the response to the database once it is received fully
+            fullResponse += chunk + " ";
+            
+            // Emit the response to the client
+            io.on('connection', (socket) => {
+                socket.emit('response', fullResponse);
+            });
+            
+
+          }
+        } else {
+          console.error("runStream did not return a generator");
+          res.status(500).json({ message : "Internal server error" });
+        }
+      }
+      
+      // Run the stream handler
+      handleStream().catch(error => res.status(500).json({ message : "Internal server error" }));
 };
 
 const getChats = async (req, res, next) => {

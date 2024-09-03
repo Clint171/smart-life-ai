@@ -1,15 +1,6 @@
 let loginSubmit = document.querySelector("#lsubmit");
 let serverUrl = "http://localhost:3000";
 
-function checkSignIn() {
-    let token = localStorage.getItem("token");
-    if (token) {
-        window.location.href = "chat.html";
-    }
-}
-
-checkSignIn();
-
 loginSubmit.addEventListener("click", ()=>{
     let username = document.querySelector("#luser").value;
     let password = document.querySelector("#lpass").value;

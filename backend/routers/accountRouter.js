@@ -18,6 +18,14 @@ router.get("/register", (req, res) => {
     res.redirect("https://smart-life-ai.onrender.com/Signup.html");
 });
 
+router.get("/checkLogin", (req, res) => {
+    if (req.cookies.token) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(401);
+    }
+});
+
 router.post("/login", login);
 
 router.post("/register", signup);

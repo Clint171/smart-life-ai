@@ -14,7 +14,7 @@ async function callGemini(prompt: string) {
 
   // Build endpoint and headers. If the provided key looks like an OAuth access token (starts with 'ya29.'),
   // send it as a Bearer token. Otherwise send the API key as a query param (`?key=`).
-  let endpoint = `https://generative.googleapis.com/v1beta2/${DEFAULT_MODEL}:generateText`;
+  let endpoint = `https://generative.googleapis.com/v1beta/models/${DEFAULT_MODEL}:generateText`;
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   if (apiKey.startsWith('ya29.')) {
     headers['Authorization'] = `Bearer ${apiKey}`;

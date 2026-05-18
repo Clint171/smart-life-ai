@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type HeaderProps = {
   onMenuClick: () => void;
@@ -8,6 +8,34 @@ type HeaderProps = {
 
 export default function Header({ onMenuClick }: HeaderProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const response = await fetch('/api/auth/status');
+        setIsLoggedIn(response.ok);
+      } catch (error) {
+        setIsLoggedIn(false);
+      }
+    }
+
+    checkAuth();
+  }, []);
+
+  const handleGoogleAuth = () => {
+    window.location.href = '/api/auth/google';
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', { method: 'POST' });
+      if (response.ok) {
+        setIsLoggedIn(false);
+      }
+    } catch (error) {
+      console.error('Logout failed', error);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 flex h-20 items-center justify-between border-b border-slate-200 bg-white/95 px-4 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95 sm:px-6 lg:px-6">
@@ -35,15 +63,24 @@ export default function Header({ onMenuClick }: HeaderProps) {
       <div className="flex items-center gap-3">
         {!isLoggedIn ? (
           <>
-            <button className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900">
+            <button
+              onClick={handleGoogleAuth}
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900"
+            >
               Sign Up
             </button>
-            <button className="rounded-2xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700">
-              Login
+            <button
+              onClick={handleGoogleAuth}
+              className="rounded-2xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+            >
+              Login with Google
             </button>
           </>
         ) : (
-          <button className="rounded-2xl bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700">
+          <button
+            onClick={handleLogout}
+            className="rounded-2xl bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+          >
             Logout
           </button>
         )}

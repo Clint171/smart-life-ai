@@ -64,18 +64,42 @@ export default function Home() {
     setSidebarOpen(false);
   };
 
-  const handleSendMessage = (message: string) => {
-    const newMessage = { id: `${activeChat.id}-m-${activeChat.messages.length + 1}`, role: "user", text: message };
-    const replyMessage = {
-      id: `${activeChat.id}-m-${activeChat.messages.length + 2}`,
-      role: "assistant",
-      text: `Great question! Here is a quick mock response to: "${message}"`,
-    };
-    const updated = {
-      ...activeChat,
-      messages: [...activeChat.messages, newMessage, replyMessage],
-    };
-    updateChat(updated);
+  const handleSendMessage = async (message: string) => {
+    // Optimistic user message
+    const userMessage = { id: `${activeChat.id}-m-${activeChat.messages.length + 1}`, role: 'user', text: message };
+    let updatedChat = { ...activeChat, messages: [...activeChat.messages, userMessage] } as any;
+    // mark loading
+    updatedChat.__isLoading = true;
+    updatedChat.__error = null;
+    updateChat(updatedChat);
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(err.error || 'Model request failed');
+      }
+      const data = await res.json();
+      const assistant = data?.message || data?.assistant || null;
+      const assistantText = assistant?.content || assistant?.text || (typeof assistant === 'string' ? assistant : null);
+      const assistantMessage = { id: `${activeChat.id}-m-${updatedChat.messages.length + 1}`, role: 'assistant', text: assistantText ?? 'No response' };
+
+      updatedChat = { ...updatedChat, messages: [...updatedChat.messages, assistantMessage] };
+      updatedChat.__isLoading = false;
+      updatedChat.__error = null;
+      updateChat(updatedChat as Chat);
+    } catch (error: any) {
+      updatedChat.__isLoading = false;
+      updatedChat.__error = error?.message || 'Failed to get response';
+      // Optionally append an assistant error message
+      const errMessage = { id: `${activeChat.id}-m-${updatedChat.messages.length + 1}`, role: 'assistant', text: `Error: ${updatedChat.__error}` };
+      updatedChat.messages = [...updatedChat.messages, errMessage];
+      updateChat(updatedChat as Chat);
+    }
   };
 
   return (

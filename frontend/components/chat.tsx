@@ -15,11 +15,14 @@ type ChatProps = {
     messages: Message[];
   };
   onSendMessage: (message: string) => void;
+  isLoading?: boolean;
+  error?: string | null;
 };
 
 export default function Chat({ chat, onSendMessage }: ChatProps) {
   const [draft, setDraft] = useState("");
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const [localError, setLocalError] = useState<string | null>(null);
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -28,8 +31,13 @@ export default function Chat({ chat, onSendMessage }: ChatProps) {
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!draft.trim()) return;
-    onSendMessage(draft.trim());
-    setDraft("");
+    try {
+      onSendMessage(draft.trim());
+      setDraft("");
+      setLocalError(null);
+    } catch (e: any) {
+      setLocalError(e?.message || 'Failed to send message');
+    }
   };
 
   return (
@@ -66,14 +74,19 @@ export default function Chat({ chat, onSendMessage }: ChatProps) {
               type="text"
               placeholder="Type your message here..."
               className="flex-1 min-w-0 rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+              disabled={Boolean((chat as any).__isLoading)}
             />
             <button
               type="submit"
-              className="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+              className="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:opacity-60"
+              disabled={Boolean((chat as any).__isLoading)}
             >
-              Send
+              {((chat as any).__isLoading) ? 'Sending...' : 'Send'}
             </button>
           </form>
+          {(localError || (chat as any).__error) && (
+            <p className="mt-2 text-sm text-red-600">{localError || (chat as any).__error}</p>
+          )}
         </div>
       </main>
     </div>

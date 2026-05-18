@@ -12,8 +12,15 @@ async function callGemini(prompt: string) {
     return `Assistant (mock): ${prompt}`;
   }
 
-  // NOTE: Verify the exact endpoint and request body against the current Google Generative API docs.
-  const endpoint = `https://generative.googleapis.com/v1beta2/${DEFAULT_MODEL}:generateText`;
+  // Build endpoint and headers. If the provided key looks like an OAuth access token (starts with 'ya29.'),
+  // send it as a Bearer token. Otherwise send the API key as a query param (`?key=`).
+  let endpoint = `https://generative.googleapis.com/v1beta2/${DEFAULT_MODEL}:generateText`;
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (apiKey.startsWith('ya29.')) {
+    headers['Authorization'] = `Bearer ${apiKey}`;
+  } else {
+    endpoint += `?key=${encodeURIComponent(apiKey)}`;
+  }
 
   const body = {
     prompt: { text: prompt },
@@ -23,10 +30,7 @@ async function callGemini(prompt: string) {
 
   const res = await fetch(endpoint, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
-    },
+    headers,
     body: JSON.stringify(body),
   });
 
@@ -37,10 +41,23 @@ async function callGemini(prompt: string) {
   }
 
   const data = await res.json();
-  // This mapping may need updating depending on API response shape
-  const output = data?.candidates?.[0]?.content || data?.output?.[0]?.content || JSON.stringify(data);
-  if (typeof output === 'object') return JSON.stringify(output);
-  return output;
+  // Support multiple possible response shapes
+  const outputCandidates =
+    data?.candidates?.[0]?.content ||
+    data?.candidates?.[0]?.output ||
+    data?.output?.[0]?.content ||
+    data?.result?.candidates?.[0]?.content ||
+    data?.text ||
+    data?.generatedText ||
+    data?.content ||
+    null;
+
+  if (!outputCandidates) return JSON.stringify(data);
+  if (typeof outputCandidates === 'string') return outputCandidates;
+  // If it's an array/object, try to extract text
+  if (Array.isArray(outputCandidates)) return outputCandidates.join('\n');
+  if (typeof outputCandidates === 'object') return JSON.stringify(outputCandidates);
+  return String(outputCandidates);
 }
 
 export async function POST(request: NextRequest) {

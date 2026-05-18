@@ -11,6 +11,7 @@ const UserSchema = new Schema({
 
 const ChatSchema = new Schema({
   owner: { type: Schema.Types.ObjectId, ref: 'User' },
+  title: { type: String, default: 'New Chat' },
   messages: { type: Array, required: true },
 });
 

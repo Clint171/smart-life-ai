@@ -25,10 +25,31 @@ async function callGemini(prompt: string) {
   }
 }
 
+async function generateTitle(userMessage: string): Promise<string> {
+  const apiKey = process.env.GOOGLE_AI_API_KEY;
+  if (!apiKey) {
+    return userMessage.substring(0, 50);
+  }
+
+  try {
+    const ai = new GoogleGenAI({ apiKey });
+    const response = await ai.models.generateContent({
+      model: DEFAULT_MODEL,
+      contents: `Generate a short, 3-5 word title for a chat that starts with: "${userMessage}". Reply with only the title, nothing else.`,
+    });
+    const title = (response.text || 'Chat').trim().substring(0, 100);
+    return title || 'Chat';
+  } catch (error: any) {
+    console.error('Title generation error:', error?.message || error);
+    return userMessage.substring(0, 50);
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const message = body?.message;
+    const chatId = body?.chatId;
     if (!message) return NextResponse.json({ error: 'Missing message' }, { status: 400 });
 
     const token = request.cookies.get('token')?.value;
@@ -45,13 +66,25 @@ export async function POST(request: NextRequest) {
     const user = await User.findById(payload.id).exec();
     if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-    let chat = await Chat.findOne({ owner: user._id }).exec();
-    if (!chat) {
+    let chat: any;
+    if (chatId) {
+      // Continue existing chat
+      chat = await Chat.findById(chatId).exec();
+      if (!chat || !user.chats.includes(chat._id)) {
+        return NextResponse.json({ error: 'Chat not found' }, { status: 404 });
+      }
+    } else {
+      // Create new chat
       chat = new Chat({ owner: user._id, messages: [] });
     }
 
     const userMessage = { role: 'user', content: message };
     chat.messages.push(userMessage);
+
+    // Generate title if this is the first message
+    if (!chat.title || chat.title === 'New Chat') {
+      chat.title = await generateTitle(message);
+    }
 
     const prompt = chat.messages.map((m: any) => `${m.role}: ${m.content}`).join('\n');
     let assistantText = '';
@@ -71,7 +104,14 @@ export async function POST(request: NextRequest) {
 
     await chat.save();
 
-    return NextResponse.json({ message: assistantMessage }, { status: 200 });
+    return NextResponse.json(
+      { 
+        chatId: chat._id?.toString(), 
+        title: chat.title,
+        message: assistantMessage 
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

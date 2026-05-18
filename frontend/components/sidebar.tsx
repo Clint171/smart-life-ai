@@ -13,9 +13,10 @@ type SidebarProps = {
   activeChatId: string;
   onSelectChat: (chatId: string) => void;
   onNewChat: () => void;
+  onDeleteChat: (chatId: string) => void;
 };
 
-export default function Sidebar({ isOpen, onClose, chats, activeChatId, onSelectChat, onNewChat }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose, chats, activeChatId, onSelectChat, onNewChat, onDeleteChat }: SidebarProps) {
   return (
     <>
       <div
@@ -51,18 +52,30 @@ export default function Sidebar({ isOpen, onClose, chats, activeChatId, onSelect
 
         <nav className="mt-6 space-y-2">
           {chats.map((chat) => (
-            <button
+            <div
               key={chat.id}
-              type="button"
-              onClick={() => onSelectChat(chat.id)}
-              className={`w-full text-left rounded-2xl border px-4 py-3 text-sm transition hover:border-blue-500 hover:bg-blue-50 dark:hover:border-blue-500 dark:hover:bg-slate-800 ${
-                chat.id === activeChatId
-                  ? "border-blue-500 bg-blue-50 text-slate-900 dark:border-blue-500 dark:bg-slate-800 dark:text-white"
-                  : "border-slate-200 bg-white text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
-              }`}
+              className="group flex items-center gap-2"
             >
-              {chat.title}
-            </button>
+              <button
+                type="button"
+                onClick={() => onSelectChat(chat.id)}
+                className={`flex-1 text-left rounded-2xl border px-4 py-3 text-sm transition hover:border-blue-500 hover:bg-blue-50 dark:hover:border-blue-500 dark:hover:bg-slate-800 ${
+                  chat.id === activeChatId
+                    ? "border-blue-500 bg-blue-50 text-slate-900 dark:border-blue-500 dark:bg-slate-800 dark:text-white"
+                    : "border-slate-200 bg-white text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
+                }`}
+              >
+                {chat.title}
+              </button>
+              <button
+                type="button"
+                onClick={() => onDeleteChat(chat.id)}
+                className="rounded-lg border border-slate-200 bg-white p-2 text-slate-400 opacity-0 transition hover:border-red-500 hover:bg-red-50 hover:text-red-600 group-hover:opacity-100 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-red-500 dark:hover:bg-red-950"
+                title="Delete chat"
+              >
+                ✕
+              </button>
+            </div>
           ))}
         </nav>
 

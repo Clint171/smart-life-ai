@@ -26,7 +26,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
             AI
           </div>
           <div>
-            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Smart Life</p>
+            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Chat</p>
             <h1 className="text-xl font-semibold text-slate-950 dark:text-slate-50">AI Chat</h1>
           </div>
         </div>

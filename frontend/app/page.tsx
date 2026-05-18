@@ -20,16 +20,16 @@ type Chat = {
 const initialChats: Chat[] = [
   {
     id: "chat-1",
-    title: "Morning routine",
+    title: "Welcome",
     messages: [
-      { id: "m-1", role: "assistant", text: "Hi there! What would you like to plan for your morning routine today?" },
+      { id: "m-1", role: "assistant", text: "Hi there! What would you like to talk about today?" },
     ],
   },
   {
     id: "chat-2",
-    title: "Home energy tips",
+    title: "Ideas",
     messages: [
-      { id: "m-2", role: "assistant", text: "I can help you reduce energy usage with smart thermostats and lighting schedules." },
+      { id: "m-2", role: "assistant", text: "I can help with brainstorming, writing, or answering questions." },
     ],
   },
 ];
@@ -51,7 +51,7 @@ export default function Home() {
       id: nextId,
       title: `New chat ${chats.length + 1}`,
       messages: [
-        { id: `${nextId}-m-1`, role: "assistant", text: "This is a new chat. Ask me anything about your smart home." },
+        { id: `${nextId}-m-1`, role: "assistant", text: "This is a new chat. Ask me anything." },
       ],
     };
     setChats((current) => [newChat, ...current]);

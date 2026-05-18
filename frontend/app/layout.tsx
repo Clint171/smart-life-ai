@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Smart Life AI Chat",
-  description: "A modern AI chat interface for smart home and personal productivity.",
+  title: "AI Chat",
+  description: "A modern AI chat interface for conversations and productivity.",
 };
 
 export default function RootLayout({

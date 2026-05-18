@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
     const token = jwt.sign({ id: user._id.toString() }, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
 
-    const res = NextResponse.redirect('/');
+    const res = NextResponse.redirect(new URL('/', request.url));
     res.cookies.set('token', token, { httpOnly: true, path: '/' });
     return res;
   } catch (error) {

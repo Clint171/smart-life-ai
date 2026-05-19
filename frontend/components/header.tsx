@@ -65,12 +65,6 @@ export default function Header({ onMenuClick }: HeaderProps) {
           <>
             <button
               onClick={handleGoogleAuth}
-              className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-900"
-            >
-              Sign Up
-            </button>
-            <button
-              onClick={handleGoogleAuth}
               className="rounded-2xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
             >
               Login with Google

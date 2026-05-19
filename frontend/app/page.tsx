@@ -17,6 +17,29 @@ type Chat = {
   messages: Message[];
 };
 
+type ApiMessage = {
+  role: string;
+  content: string;
+};
+
+type ApiChat = {
+  id: string;
+  title: string;
+  messages: ApiMessage[];
+};
+
+function normalizeChat(chat: ApiChat): Chat {
+  return {
+    id: chat.id,
+    title: chat.title,
+    messages: chat.messages.map((message, index) => ({
+      id: `${chat.id}-m-${index + 1}`,
+      role: message.role,
+      text: message.content,
+    })),
+  };
+}
+
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [chats, setChats] = useState<Chat[]>([]);
@@ -30,9 +53,10 @@ export default function Home() {
         const res = await fetch('/api/chats');
         if (res.ok) {
           const data = await res.json();
-          setChats(data.chats || []);
-          if (data.chats.length > 0) {
-            setActiveChatId(data.chats[0].id);
+          const normalizedChats = (data.chats || []).map(normalizeChat);
+          setChats(normalizedChats);
+          if (normalizedChats.length > 0) {
+            setActiveChatId(normalizedChats[0].id);
           }
         }
       } catch (error) {
@@ -55,7 +79,7 @@ export default function Home() {
       const res = await fetch('/api/chats', { method: 'POST' });
       if (res.ok) {
         const newChat = await res.json();
-        setChats((current) => [newChat, ...current]);
+        setChats((current) => [normalizeChat(newChat), ...current]);
         setActiveChatId(newChat.id);
         setSidebarOpen(false);
       }

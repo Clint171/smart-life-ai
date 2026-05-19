@@ -1,6 +1,8 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type Message = {
   id: string;
@@ -56,7 +58,9 @@ export default function Chat({ chat, onSendMessage }: ChatProps) {
               <p className="text-sm font-semibold capitalize">
                 {message.role === "assistant" ? "Assistant" : message.role === "user" ? "You" : message.role}
               </p>
-              <p className="mt-3 text-sm leading-7">{message.text}</p>
+              <div className="mt-3 text-sm leading-7 break-words">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.text}</ReactMarkdown>
+              </div>
             </div>
           ))}
           <div ref={messageEndRef} />

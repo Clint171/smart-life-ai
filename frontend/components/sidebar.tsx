@@ -14,9 +14,11 @@ type SidebarProps = {
   onSelectChat: (chatId: string) => void;
   onNewChat: () => void;
   onDeleteChat: (chatId: string) => void;
+  isCreatingChat: boolean;
+  deletingChatId: string | null;
 };
 
-export default function Sidebar({ isOpen, onClose, chats, activeChatId, onSelectChat, onNewChat, onDeleteChat }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose, chats, activeChatId, onSelectChat, onNewChat, onDeleteChat, isCreatingChat, deletingChatId }: SidebarProps) {
   return (
     <>
       <div
@@ -70,10 +72,11 @@ export default function Sidebar({ isOpen, onClose, chats, activeChatId, onSelect
               <button
                 type="button"
                 onClick={() => onDeleteChat(chat.id)}
-                className="rounded-lg border border-slate-200 bg-white p-2 text-slate-400 opacity-0 transition hover:border-red-500 hover:bg-red-50 hover:text-red-600 group-hover:opacity-100 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-red-500 dark:hover:bg-red-950"
-                title="Delete chat"
+                disabled={deletingChatId === chat.id}
+                className={`rounded-lg border border-slate-200 bg-white p-2 text-slate-400 opacity-0 transition hover:border-red-500 hover:bg-red-50 hover:text-red-600 group-hover:opacity-100 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-red-500 dark:hover:bg-red-950 ${deletingChatId === chat.id ? 'cursor-not-allowed opacity-50 hover:border-slate-200 hover:bg-white hover:text-slate-400 dark:hover:border-slate-800 dark:hover:bg-slate-900' : ''}`}
+                title={deletingChatId === chat.id ? 'Deleting…' : 'Delete chat'}
               >
-                ✕
+                {deletingChatId === chat.id ? '…' : '✕'}
               </button>
             </div>
           ))}
@@ -82,9 +85,10 @@ export default function Sidebar({ isOpen, onClose, chats, activeChatId, onSelect
         <button
           type="button"
           onClick={onNewChat}
-          className="mt-6 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+          disabled={isCreatingChat}
+          className={`mt-6 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 ${isCreatingChat ? 'cursor-not-allowed opacity-60 hover:bg-white dark:hover:bg-slate-900' : ''}`}
         >
-          + New chat
+          {isCreatingChat ? 'Creating…' : '+ New chat'}
         </button>
       </aside>
     </>

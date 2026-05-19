@@ -45,6 +45,8 @@ export default function Home() {
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCreatingChat, setIsCreatingChat] = useState(false);
+  const [deletingChatId, setDeletingChatId] = useState<string | null>(null);
 
   // Fetch chats on mount
   useEffect(() => {
@@ -75,6 +77,8 @@ export default function Home() {
   };
 
   const handleNewChat = async () => {
+    if (isCreatingChat) return;
+    setIsCreatingChat(true);
     try {
       const res = await fetch('/api/chats', { method: 'POST' });
       if (res.ok) {
@@ -85,6 +89,8 @@ export default function Home() {
       }
     } catch (error) {
       console.error('Failed to create chat', error);
+    } finally {
+      setIsCreatingChat(false);
     }
   };
 
@@ -94,6 +100,8 @@ export default function Home() {
   };
 
   const handleDeleteChat = async (chatId: string) => {
+    if (deletingChatId) return;
+    setDeletingChatId(chatId);
     try {
       const res = await fetch(`/api/chats/${chatId}`, { method: 'DELETE' });
       if (res.ok) {
@@ -106,6 +114,8 @@ export default function Home() {
       }
     } catch (error) {
       console.error('Failed to delete chat', error);
+    } finally {
+      setDeletingChatId(null);
     }
   };
 
@@ -165,7 +175,7 @@ export default function Home() {
     <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <Header onMenuClick={() => setSidebarOpen(true)} />
       <div className="lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-6">
-        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} chats={chats} activeChatId={activeChatId || ''} onSelectChat={handleChatSelect} onNewChat={handleNewChat} onDeleteChat={handleDeleteChat} />
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} chats={chats} activeChatId={activeChatId || ''} onSelectChat={handleChatSelect} onNewChat={handleNewChat} onDeleteChat={handleDeleteChat} isCreatingChat={isCreatingChat} deletingChatId={deletingChatId} />
         {activeChat ? (
           <Chat chat={activeChat} onSendMessage={handleSendMessage} />
         ) : (
